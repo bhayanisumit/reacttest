@@ -9,6 +9,7 @@ import Image from "../components/image/image";
 import Href from "../components/href/href";
 
 function Home() {
+  const [formData, setFormData] = useState({})
   const handlerSaveDraft = () => {
     console.log("savedraft handler");
   };
@@ -19,15 +20,153 @@ function Home() {
     console.log("e", e.target.value);
   };
 
+  useEffect(()=> {
+   let jsonData=  {
+      "form_header": "Let's get to know you better",
+      "fields": [
+          {
+              "section": 1,
+              "section_name": "Basic Details",
+              "field_id": "candidate_name",
+              "field_label": "Candidate Name",
+              "field_type": "text",
+              "validations": ["required", "alphabets"],
+              "info": "Your full name"
+          },
+          {
+              "section":1,
+              "section_name": "Basic Details",
+              "field_id": "candidate_email",
+              "field_label": "Candidate Email",
+              "field_type": "text",
+              "validations": ["required", "email"],
+              "info": "Your Email"
+          },
+          {
+              "section": 1,
+              "section_name": "Basic Details",
+              "field_id": "candidate_phone",
+              "field_label": "Candidate Phone",
+              "field_type": "text",
+              "validations": ["required", "phone"],
+              "info": "Your mobile number"
+          },
+          {
+              "section": 1,
+              "section_name": "Basic Details",
+              "field_id": "candidate_location",
+              "field_label": "Current location",
+              "field_type": "text",
+              "validations": ["required", "alphabets"],
+              "info": "Your current location"
+          },
+          {
+              "section": 1,
+              "section_name": "Basic Details",
+              "field_id": "marital_status",
+              "field_label": "Marital Status",
+              "field_type": "radio",
+              "field_options": [{"value": 1, "label": "Married"}, {"value": 0, "label": "Single"}],
+              "validations": ["required",],
+              "info": "Are you married"
+          },
+          {
+              "section": 2,
+              "section_name": "Education Details",
+              "field_id": "education_level",
+              "field_label": "Education",
+              "field_type": "select",
+              "field_options": [
+                  {"value": "10th", "label": "High School"}, {"value": "12th", "label": "Senior School"},
+                  {"value": "graduate", "label": "Graduation"}, {"value": "pg", "label": "Postgraduate"}
+              ],
+              "validations": ["required"],
+              "info": "Select your highest education"
+          },
+          {
+              "section": 2,
+              "section_name": "Education Details",
+              "field_id": "institute_name",
+              "field_label": "Institute/College/University",
+              "field_type": "text",
+              "validations": ["required"],
+              "info": "Enter the Institute/College/University name where you completed this mentioned education."
+          },
+          {
+              "section": 2,
+              "section_name": "Education Details",
+              "field_id": "completed_year",
+              "field_label": "Completion Year",
+              "field_type": "text",
+              "validations": ["required", "min_value_1970", "max_value_2010"],
+              "info": "Enter the year when you finished the education"
+          },
+          {
+              "section": 3,
+              "section_name": "Employment history",
+              "field_id": "company_name",
+              "field_label": "Company name",
+              "field_type": "text",
+              "validations": ["required"],
+              "info": "Enter the company name"
+          },
+          {
+              "section": 3,
+              "section_name": "Employment history",
+              "field_id": "designation",
+              "field_label": "Designation/Title",
+              "field_type": "text",
+              "validations": ["required"],
+              "info": "Enter Designation"
+          },
+          {
+              "section": 3,
+              "section_name": "Employment history",
+              "field_id": "start_year_month",
+              "field_label": "Start year and month",
+              "field_type": "text",
+              "validations": ["required"],
+              "info": "Enter start year mm/yyyy"
+          },
+          {
+              "section": 3,
+              "section_name": "Employment history",
+              "field_id": "end_year_month",
+              "field_label": "End year and month",
+              "field_type": "text",
+              "validations": ["required"],
+              "info": "Enter end year mm/yyyy"
+          }
+      ]
+  
+  }
+  
+    let uniqueData = [];
+    for (let i = 0; i < jsonData?.fields?.length; i++) {
+      if(uniqueData.indexOf(jsonData?.fields[i]?.section) === -1){
+        uniqueData.push(jsonData?.fields[i]?.section)
+      }
+    }
+   
+    var sectionData = [];
+    for (let i = 0; i < uniqueData.length; i++) {
+      const data = jsonData?.fields?.filter((obj) => obj.section === uniqueData[i]);
+      if (data.length > 0) sectionData.push({ section: uniqueData[i], data: data , sectionName : data[0].section_name });
+    }
+    const tmp = {form_header : jsonData.form_header , fields : sectionData }
+    setFormData(tmp);
+    
+  },[])
+
   return (
     <section className="p-4 mt-3">
       <div className="container mb-4">
         <div className="row">
           <div className="col-12 text-center">
-            <h1 className="h3 mb-0 text-info">Let's get to Know you better</h1>
+            <h1 className="h3 mb-0 text-info">{formData?.form_header}</h1>
           </div>
         </div>
-        <Caption name="Basic Details" />
+          <Caption name="Basic Details" /> 
           <div className="row mt-5">
           <div className="col-3 text-center">
            <Label htmlfor="cname" label=" Candidate Name(*)" classname="col-form-label" />
@@ -380,7 +519,8 @@ function Home() {
         </div>
       </div>
       <Tooltip id="my-tooltip" />
-    </section>
+         </section>
+       
   );
 }
 
