@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.tooltip-custom-class{
+  background-color: blueviolet !important;
+  padding: 20px !important;
+  line-height: 20px;
+}
+
+.cust-right-margin{
+  margin-right: 125px;
+}
